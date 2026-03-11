@@ -1,6 +1,16 @@
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 
-mongoose.connect(
-  "mongodb+srv://gytis996:gytis1996@cluster0.kuvp4yv.mongodb.net/forum",
-);
-export default mongoose;
+dotenv.config();
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(process.env.MONGO_URI);
+    console.log("successfully connected to MongoDB");
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error.message);
+    process.exit(1);
+  }
+};
+
+export default connectDB;

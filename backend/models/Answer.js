@@ -1,10 +1,20 @@
-import mongoose from "../db.js";
+import mongoose from "mongoose";
 
 const AnswerSchema = new mongoose.Schema({
-  answer_text: String,
-  date: { type: Date, default: Date.now },
+  answer_text: { type: String, required: true },
+
+  question_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Question",
+    required: true,
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
   gained_likes_number: { type: Number, default: 0 },
-  question_id: String,
+  date: { type: Date, default: Date.now },
 });
 
 export default mongoose.model("Answer", AnswerSchema);
