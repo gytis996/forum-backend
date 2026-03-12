@@ -5,7 +5,7 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
-router.get("/questions", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const { filter } = req.query;
 
@@ -31,9 +31,10 @@ router.get("/questions", async (req, res) => {
   }
 });
 
-router.post("/question", auth, async (req, res) => {
-  if (!req.body.question_text)
-    return res.status(400).json({ message: "Text is required" });
+router.post("/", auth, async (req, res) => {
+  if (!req.body.question_text) {
+    return res.status(400).json({ message: "Question text is required" });
+  }
 
   try {
     const question = await Question.create({
@@ -46,10 +47,11 @@ router.post("/question", auth, async (req, res) => {
   }
 });
 
-router.delete("/question/:id", auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const question = await Question.findById(req.params.id);
-    if (!question) return res.status(404).json({ message: "Not found" });
+    if (!question)
+      return res.status(404).json({ message: "Question not found" });
 
     if (question.user_id.toString() !== req.user.id) {
       return res
@@ -57,8 +59,11 @@ router.delete("/question/:id", auth, async (req, res) => {
         .json({ message: "You can only delete your own questions" });
     }
 
+    await Answer.deleteMany({ question_id: req.params.id });
+
     await Question.findByIdAndDelete(req.params.id);
-    res.json({ message: "Question deleted" });
+
+    res.json({ message: "Question and all related answers deleted" });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
