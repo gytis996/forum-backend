@@ -3,7 +3,9 @@ dotenv.config();
 
 import express from "express";
 import cors from "cors";
+
 import connectDB from "./db.js";
+
 import authRoutes from "./routes/authRoutes.js";
 import questionRoutes from "./routes/questionRoutes.js";
 import answerRoutes from "./routes/answerRoutes.js";
@@ -20,4 +22,7 @@ app.use("/api/questions", questionRoutes);
 app.use("/api/answers", answerRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

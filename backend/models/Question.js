@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const QuestionSchema = new mongoose.Schema({
-  question_text: { type: String, required: true }, // Sutampa su užduotimi
+  question_text: { type: String, required: true },
   user_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -9,4 +9,5 @@ const QuestionSchema = new mongoose.Schema({
   },
   date: { type: Date, default: Date.now },
 });
+
 export default mongoose.model("Question", QuestionSchema);
